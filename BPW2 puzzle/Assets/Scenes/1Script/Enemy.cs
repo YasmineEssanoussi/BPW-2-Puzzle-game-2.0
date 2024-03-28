@@ -8,8 +8,13 @@ public class Enemy : MonoBehaviour
     public enum StateENum { Idle, Patrol, Attack }
     public StateENum state;
     public NavMeshAgent navMeshAgent;
+
+    //patrolPoints
     public Transform[] patrolPoints;
     private int patrolIndex = 0;
+    //player
+    public Transform Player;
+    public float viewDistance = 5;
 
     // Start is called before the first frame update
     private void Start()
@@ -39,7 +44,12 @@ public class Enemy : MonoBehaviour
 
     private void AttackBehaviour()
     {
+        navMeshAgent.SetDestination(Player.transform.position);
 
+        if (Vector3.Distance(transform.position, Player.transform.position) < viewDistance)
+        {
+            state = StateENum.Patrol;
+        }
     } 
 
 
@@ -58,6 +68,11 @@ public class Enemy : MonoBehaviour
                 patrolIndex = 0;
             }
             navMeshAgent.SetDestination(patrolPoints[patrolIndex].position);
+        }
+
+        if(Vector3.Distance(transform.position,Player.transform.position) < viewDistance)
+        {
+            state = StateENum.Attack;
         }
     }
 
