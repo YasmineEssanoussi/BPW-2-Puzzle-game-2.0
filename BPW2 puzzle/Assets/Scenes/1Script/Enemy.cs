@@ -9,11 +9,13 @@ public class Enemy : MonoBehaviour
     public StateENum state;
     public NavMeshAgent navMeshAgent;
     public Transform[] patrolPoints;
+    private int patrolIndex = 0;
 
     // Start is called before the first frame update
     private void Start()
     {
-    //    navMeshAgent = GetComponent<NavMeshAgent>();
+        //    navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshAgent.SetDestination(patrolPoints[patrolIndex].position);
     }
 
 
@@ -48,7 +50,15 @@ public class Enemy : MonoBehaviour
 
     private void PatrolBehaviour()
     {
-        navMeshAgent.SetDestination(patrolPoints[0].position);
+        if(navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance) //als enemy bij patrolPunt is aangekomen
+        {
+            patrolIndex += 1; //dan naar de volgende patrolPunt lopen
+            if(patrolIndex >= patrolPoints.Length)//Langs alle patrolPoint terug naar 0
+            {
+                patrolIndex = 0;
+            }
+            navMeshAgent.SetDestination(patrolPoints[patrolIndex].position);
+        }
     }
 
 }
