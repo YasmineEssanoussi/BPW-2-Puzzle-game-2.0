@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class lightonoff : MonoBehaviour
+public class OpenExitDoor : MonoBehaviour
 {
     public GameObject txtToDisplay; //tekst UI ''Press F to interact''
-    private bool PlayerInZone;                  
-    public GameObject lightorobj; //Object die geactiveerd wordt (licht)
+    private bool PlayerInZone;
+    public GameObject exitDoor; //Object die geactiveerd wordt (Deur opent)
 
 
     private void Start()
@@ -20,15 +20,15 @@ public class lightonoff : MonoBehaviour
     {
         if (PlayerInZone && Input.GetKeyDown(KeyCode.F))   // Speler bevind zich in de zone en klikt op 'F'
         {
-            lightorobj.SetActive(!lightorobj.activeSelf);  // bij interactie worrdt actief
-            gameObject.GetComponent<AudioSource>().Play(); 
-            gameObject.GetComponent<Animator>().Play("switch");
+            exitDoor.SetActive(!exitDoor.activeSelf);  // bij interactie worrdt actief
+            gameObject.GetComponent<AudioSource>().Play();
+            gameObject.GetComponent<Animator>().Play("open");
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")     
+        if (other.gameObject.tag == "Player")
         {
             txtToDisplay.SetActive(true); //Als de speler zich in de zone bevindt wordt tekst zichtbaar
             PlayerInZone = true;
@@ -36,7 +36,7 @@ public class lightonoff : MonoBehaviour
     }
 
 
-    private void OnTriggerExit(Collider other)     
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
